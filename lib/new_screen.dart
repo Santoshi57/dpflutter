@@ -7,31 +7,31 @@ class NewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("New List"),
+        title: const Text("New List"),
         foregroundColor: Colors.white,
         backgroundColor: Colors.purple,
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             formTitle("Task Title"),
             TextFormField(
               decoration: InputDecoration(
-                fillColor: Color(0XFFF5F2F9),
+                fillColor: const Color(0XFFF5F2F9),
                 filled: true,
                 hintText: "Task Item",
                 focusedBorder: formBorder(true),
                 enabledBorder: formBorder(false),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             formTitle("Category Name"),
-            Row(
+            const Row(
               children: [
                 Chip(
                   label: Text(
@@ -60,7 +60,7 @@ class NewScreen extends StatelessWidget {
                       width: (MediaQuery.of(context).size.width / 2) - 12,
                       child: TextFormField(
                         decoration: InputDecoration(
-                          fillColor: Color(0XFFF5F2F9),
+                          fillColor: const Color(0XFFF5F2F9),
                           filled: true,
                           hintText: "Task Item",
                           focusedBorder: formBorder(true),
@@ -70,7 +70,7 @@ class NewScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Column(
@@ -90,7 +90,7 @@ class NewScreen extends StatelessWidget {
                       width: (MediaQuery.of(context).size.width / 2) - 12,
                       child: TextFormField(
                         decoration: InputDecoration(
-                          fillColor: Color(0XFFF5F2F9),
+                          fillColor: const Color(0XFFF5F2F9),
                           filled: true,
                           hintText: "Task Item",
                           focusedBorder: formBorder(true),
@@ -106,29 +106,29 @@ class NewScreen extends StatelessWidget {
             TextFormField(
               maxLines: 3,
               decoration: InputDecoration(
-                fillColor: Color(0XFFF5F2F9),
+                fillColor: const Color(0XFFF5F2F9),
                 filled: true,
                 hintText: "Note",
                 focusedBorder: formBorder(true),
                 enabledBorder: formBorder(false),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  // foregroundColor: Colors.pinkAccent,
+                ),
+                child: const Text(
                   "Save",
                   style: TextStyle(
                     color: Colors.white,
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  // foregroundColor: Colors.pinkAccent,
                 ),
               ),
             ),
@@ -149,14 +149,14 @@ class NewScreen extends StatelessWidget {
 
   OutlineInputBorder formBorder(bool isForFocus) {
     if (isForFocus) {
-      return OutlineInputBorder(
+      return const OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.blue,
           width: 1,
         ),
       );
     }
-    return OutlineInputBorder(
+    return const OutlineInputBorder(
       borderSide: BorderSide(
         color: Colors.black,
         width: 0,

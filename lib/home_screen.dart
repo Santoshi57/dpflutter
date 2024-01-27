@@ -7,13 +7,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home Page"),
+        title: const Text("Home Page"),
         centerTitle: true,
         foregroundColor: Colors.white,
         backgroundColor: Colors.purple,
       ),
       body: ListView(
-        children: [
+        children: const [
      TextTitle (),
         ],
       ),
@@ -29,5 +29,5 @@ class HomeScreen extends StatelessWidget {
     return const Placeholder();
   }
 }
-{
-}
+
+
