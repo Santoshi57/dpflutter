@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'components/text_title.dart';
 
 class NewItem extends StatelessWidget {
+
   const NewItem({super.key});
 
   @override

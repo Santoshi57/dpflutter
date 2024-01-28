@@ -1,7 +1,11 @@
+import 'dart:io';
+
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:newproject/components/text_title.dart';
 import 'package:newproject/new_item.dart';
 
-import 'components/text_title.dart';
 import 'components/to_do_list_item.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,6 +38,34 @@ class _HomeScreenState extends State<HomeScreen> {
       "title": "This is the title",
     },
   ];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    // calls itself before ui is rendered on screen
+    loadData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // calls itself after ui is removed on screen
+
+    super.dispose();
+  }
+
+  void loadData() async {
+    //
+    // post
+    await Future.delayed(
+      Duration(seconds: 3),
+          () {
+        setState(() {
+          isLoading = false;
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(
+        child: isLoading
+            ? CircularProgressIndicator()
+            : ListView(
           children: [
             TextTitle("Uncompleted"),
             Container(
@@ -70,17 +104,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   for (var i = 0; i < uncompletedTasks.length; i++)
                     Column(
                       children: [
-                        ToDoListItem(uncompletedTasks[i], "uncompleted", () {
-                          setState(() {
-                            uncompletedTasks.removeAt(i);
-                          });
-                        }, () {
-                          setState(() {
-                            var temp = uncompletedTasks[i];
-                            uncompletedTasks.removeAt(i);
-                            completedTask.add(temp);
-                          });
-                        }),
+                        ToDoListItem(uncompletedTasks[i], "uncompleted",
+                                () {
+                              setState(() {
+                                uncompletedTasks.removeAt(i);
+                              });
+                            }, () {
+                              setState(() {
+                                var temp = uncompletedTasks[i];
+                                uncompletedTasks.removeAt(i);
+                                completedTask.add(temp);
+                              });
+                            }),
                         Divider(),
                       ],
                     ),
@@ -124,12 +159,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => NewItem(),
               ));
+
+          // log("page push balla balla vayo");
         },
         child: Icon(
           Icons.add,
