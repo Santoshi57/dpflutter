@@ -1,6 +1,4 @@
 import 'dart:io';
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newproject/components/text_title.dart';
@@ -14,30 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Map<String, dynamic>> completedTask = [
-    {
-      "category_name": "school",
-      "description": "This is the description of completed task",
-      "title": "This is the title",
-    },
-    {
-      "category_name": "market",
-      "description": "This is the description of completed task",
-      "title": "This is the title",
-    },
-  ];
-  List<Map<String, dynamic>> uncompletedTasks = [
-    {
-      "category_name": "school",
-      "description": "This is the description of uncompleted task",
-      "title": "This is the title",
-    },
-    {
-      "category_name": "market",
-      "description": "This is the description of uncompleted task",
-      "title": "This is the title",
-    },
-  ];
+  List<Map<String, dynamic>> completedTask = [];
+  List<Map<String, dynamic>> uncompletedTasks = [];
   bool isLoading = true;
 
   @override
@@ -58,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //
     // post
     await Future.delayed(
-      Duration(seconds: 3),
+      const Duration(seconds: 3),
           () {
         setState(() {
           isLoading = false;
@@ -77,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     */
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home Page"),
+        title: const Text("Home Page"),
         centerTitle: true,
         foregroundColor: Colors.white,
         backgroundColor: Colors.purple,
@@ -85,18 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: isLoading
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : ListView(
           children: [
             TextTitle("Uncompleted"),
             Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 5,
                 horizontal: 8,
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: Color(0XFFe9defe),
+                color: const Color(0XFFe9defe),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 completedTask.add(temp);
                               });
                             }),
-                        Divider(),
+                        const Divider(),
                       ],
                     ),
                 ],
@@ -124,32 +100,37 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             TextTitle("Completed"),
             Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 5,
                 horizontal: 8,
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: Color(0XFFe9defe),
+                color: const Color(0XFFe9defe),
               ),
-              child: Column(
+              child: completedTask.isEmpty
+                  ? const Center(
+                child: Text("Empty text"),
+              )
+                  : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   for (var i = 0; i < completedTask.length; i++)
                     Column(
                       children: [
-                        ToDoListItem(completedTask[i], "completed", () {
-                          setState(() {
-                            completedTask.removeAt(i);
-                          });
-                        }, () {
-                          setState(() {
-                            var temp = completedTask[i];
-                            completedTask.removeAt(i);
-                            uncompletedTasks.add(temp);
-                          });
-                        }),
-                        Divider(),
+                        ToDoListItem(completedTask[i], "completed",
+                                () {
+                              setState(() {
+                                completedTask.removeAt(i);
+                              });
+                            }, () {
+                              setState(() {
+                                var temp = completedTask[i];
+                                completedTask.removeAt(i);
+                                uncompletedTasks.add(temp);
+                              });
+                            }),
+                        const Divider(),
                       ],
                     ),
                 ],
@@ -160,18 +141,25 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Navigator.push(
+          // ahdfhasdfhjsdf
+          var returnedValud = await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => NewItem(),
+                builder: (_) => const NewItem(),
               ));
-
+          setState(() {
+            this.uncompletedTasks.insert(0, returnedValud);
+          });
           // log("page push balla balla vayo");
         },
-        child: Icon(
+        child: const Icon(
           Icons.add,
         ),
       ),
     );
+  }
+
+  Future someFunction() async {
+    return "null";
   }
 }
