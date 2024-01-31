@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:newproject/components/text_title.dart';
 
 class NewItem extends StatefulWidget {
-  final title = "aff";
   const NewItem({super.key});
 
   @override
@@ -10,10 +9,12 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
-  late TextEditingController taskTitle;
-  late TextEditingController date;
-  late TextEditingController time;
-  late TextEditingController note;
+  late final TextEditingController taskTitle;
+  late final TextEditingController date;
+  late final TextEditingController time;
+  late final TextEditingController note;
+
+  String categoryName = 'school';
 
   @override
   void initState() {
@@ -36,11 +37,9 @@ class _NewItemState extends State<NewItem> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    // object = null;
-    // object.neb.data;
     return Scaffold(
       appBar: AppBar(
-        title: Text("New List Iem"),
+        title: const Text("New List Iem"),
         foregroundColor: Colors.white,
         backgroundColor: Colors.purple,
         centerTitle: true,
@@ -48,7 +47,7 @@ class _NewItemState extends State<NewItem> {
       body: Form(
         key: formKey,
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,35 +58,67 @@ class _NewItemState extends State<NewItem> {
                   validator: (value) {
                     if (value == null) return "Invalid value";
                     if (value.trim().isEmpty) return "Value cannot be empty";
-                    null;
+                    return null;
                   },
                   decoration: InputDecoration(
-                    fillColor: Color(0XFFF5F2F9),
+                    fillColor: const Color(0XFFF5F2F9),
                     filled: true,
                     hintText: "Task Item",
                     focusedBorder: formBorder(true),
                     enabledBorder: formBorder(false),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 TextTitle("Category Name"),
                 Row(
                   children: [
-                    Chip(
-                      label: Text(
-                        "Education",
-                        style: TextStyle(
-                          color: Colors.white,
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          categoryName = "school";
+                        });
+                        print(categoryName);
+                      },
+                      child: Chip(
+                        label: Text(
+                          "Education",
+                          style: TextStyle(
+                            color: categoryName == "school"
+                                ? Colors.white
+                                : null,
+                          ),
                         ),
+                        backgroundColor: categoryName == "school"
+                            ? Colors.purple
+                            : null,
                       ),
-                      backgroundColor: Colors.purple,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
-                    Chip(label: Text("Shop")),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          categoryName = "market";
+                        });
+                        print(categoryName);
+                      },
+                      child: Chip(
+                        label: Text(
+                          "Shop",
+                          style: TextStyle(
+                            color: categoryName == "market"
+                                ? Colors.white
+                                : null,
+                          ),
+                        ),
+                        backgroundColor: categoryName == "market"
+                            ? Colors.purple
+                            : null,
+                      ),
+                    ),
                   ],
                 ),
                 // infinite width + infinite width
@@ -109,7 +140,7 @@ class _NewItemState extends State<NewItem> {
                             },
                             controller: date,
                             decoration: InputDecoration(
-                              fillColor: Color(0XFFF5F2F9),
+                              fillColor: const Color(0XFFF5F2F9),
                               filled: true,
                               hintText: "Date",
                               focusedBorder: formBorder(true),
@@ -119,7 +150,7 @@ class _NewItemState extends State<NewItem> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     Column(
@@ -146,7 +177,7 @@ class _NewItemState extends State<NewItem> {
                             },
                             controller: time,
                             decoration: InputDecoration(
-                              fillColor: Color(0XFFF5F2F9),
+                              fillColor: const Color(0XFFF5F2F9),
                               filled: true,
                               hintText: "Time",
                               focusedBorder: formBorder(true),
@@ -163,31 +194,51 @@ class _NewItemState extends State<NewItem> {
                   controller: note,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    fillColor: Color(0XFFF5F2F9),
+                    fillColor: const Color(0XFFF5F2F9),
                     filled: true,
                     hintText: "Note",
                     focusedBorder: formBorder(true),
                     enabledBorder: formBorder(false),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      formKey.currentState!.validate();
+                      /**
+                          {
+                          "category_name": "school",
+                          "description": "This is the description of completed task",
+                          "title": "This is the title",
+                          }, */
+                      bool formValidated = formKey.currentState!.validate();
+                      if (formValidated) {
+                        var taskTitle = this.taskTitle.text.trim();
+                        var date = this.date.text.trim();
+                        var time = this.time.text.trim();
+                        var note = this.note.text.trim();
+                        Map<String, dynamic> data = {
+                          "description": note,
+                          "title": taskTitle,
+                          "category_name": categoryName,
+                        };
+                        Navigator.pop(context, data);
+                      } else {
+                        print("form not valid");
+                      }
                     },
-                    child: Text(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple,
+                      // foregroundColor: Colors.pinkAccent,
+                    ),
+                    child: const Text(
                       "Save",
                       style: TextStyle(
                         color: Colors.white,
                       ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
-                      // foregroundColor: Colors.pinkAccent,
                     ),
                   ),
                 ),
@@ -201,14 +252,14 @@ class _NewItemState extends State<NewItem> {
 
   OutlineInputBorder formBorder(bool isForFocus) {
     if (isForFocus) {
-      return OutlineInputBorder(
+      return const OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.blue,
           width: 1,
         ),
       );
     }
-    return OutlineInputBorder(
+    return const OutlineInputBorder(
       borderSide: BorderSide(
         color: Colors.black,
         width: 0,
